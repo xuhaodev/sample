@@ -1,103 +1,168 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { FaArrowRight } from "react-icons/fa";
+import Navbar from "@/components/Navbar";
+
+// 粒子背景效果
+const ParticleBackground = () => {
+  return (
+    <div className="fixed inset-0 z-0 opacity-40">
+      <div className="absolute inset-0 overflow-hidden">
+        {Array.from({ length: 100 }).map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full bg-blue-500"
+            initial={{
+              x: Math.random() * 100 + "%",
+              y: Math.random() * 100 + "%",
+              opacity: Math.random() * 0.5 + 0.3,
+              scale: Math.random() * 0.5 + 0.5,
+            }}
+            animate={{
+              x: [
+                Math.random() * 100 + "%",
+                Math.random() * 100 + "%",
+                Math.random() * 100 + "%",
+              ],
+              y: [
+                Math.random() * 100 + "%",
+                Math.random() * 100 + "%",
+                Math.random() * 100 + "%",
+              ],
+            }}
+            transition={{
+              duration: Math.random() * 40 + 20,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+            style={{
+              width: `${Math.random() * 4 + 1}px`,
+              height: `${Math.random() * 4 + 1}px`,
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// 主题卡片
+interface ThemeCardProps {
+  title: string;
+  icon: React.ReactNode;
+  description: string;
+  href: string;
+  color: string;
+  delay: number;
+}
+
+const ThemeCard = ({ title, icon, description, href, color, delay }: ThemeCardProps) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: 0.5,
+        delay: delay,
+        ease: "easeOut",
+      }}
+      className={`bg-gray-900/50 backdrop-blur-xl p-6 rounded-xl border-t border-l ${color} shadow-xl hover:scale-105 transition-transform duration-300`}
+    >
+      <div className="flex items-center mb-4">
+        <div className={`p-3 rounded-lg ${color} mr-4`}>{icon}</div>
+        <h3 className="text-xl font-bold">{title}</h3>
+      </div>
+      <p className="text-gray-300 mb-6">{description}</p>
+      <Link href={href} className="group inline-flex items-center text-blue-400 hover:text-blue-300">
+        探索更多
+        <FaArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+      </Link>
+    </motion.div>
+  );
+};
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [mounted, setMounted] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  return (
+    <div className="min-h-screen relative">
+      <ParticleBackground />
+      <Navbar />
+      
+      <div className="container mx-auto pt-32 px-4 md:px-6 pb-20">
+        <div className="flex flex-col items-center text-center mb-16">
+          <motion.h1 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            探索科技 • 创造未来
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-xl md:text-2xl text-gray-300 max-w-3xl"
           >
-            Read our docs
-          </a>
+            2025年学校科技创新节：探索前沿科技，体验未来世界
+          </motion.p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+          <ThemeCard
+            title="航天科技"
+            icon={<span className="text-2xl">🚀</span>}
+            description="探索太空探索的最新进展，体验模拟火箭发射和太空站任务。"
+            href="/aerospace"
+            color="border-blue-900/50"
+            delay={0.4}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+          <ThemeCard
+            title="人工智能"
+            icon={<span className="text-2xl">🤖</span>}
+            description="了解AI如何改变我们的世界，体验智能机器人和深度学习应用。"
+            href="/ai"
+            color="border-purple-900/50"
+            delay={0.6}
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
+          <ThemeCard
+            title="量子计算"
+            icon={<span className="text-2xl">⚛️</span>}
+            description="探索计算新范式，了解量子比特和量子叠加原理如何改变科技未来。"
+            href="/quantum"
+            color="border-emerald-900/50"
+            delay={0.8}
           />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        </div>
+
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1 }}
+          className="mt-24 text-center"
+        >
+          <p className="text-gray-400 mb-8">2025年4月15日 - 4月20日</p>
+          <div className="inline-block">
+            <Link 
+              href="#schedule" 
+              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium py-3 px-8 rounded-full inline-flex items-center transition-all duration-300 shadow-lg hover:shadow-xl"
+            >
+              查看活动日程
+              <FaArrowRight className="ml-2" />
+            </Link>
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 }
