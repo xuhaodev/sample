@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { useEffect } from "react";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import { FaBrain, FaRobot, FaMicrochip, FaNetworkWired, FaCode, FaLaptopCode } from "react-icons/fa";
